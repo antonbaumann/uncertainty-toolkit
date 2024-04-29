@@ -1,5 +1,67 @@
 import torch
 from typing import Optional
+from abc import ABC, abstractmethod
+
+
+class RegressionLoss(torch.nn.Module, ABC):
+    num_params: int
+    """Number of parameters per channel expected in the input tensor"""
+
+    @abstractmethod
+    def forward(self, input: torch.Tensor, target: torch.Tensor, *, mask: Optional[torch.Tensor] = None, reduce_mean: bool = True) -> torch.Tensor:
+        """
+        Forward pass for computing the regression loss.
+
+        Parameters:
+            input (torch.Tensor): The input tensor containing the predicted values.
+            target (torch.Tensor): The tensor containing the target values.
+            mask (Optional[torch.Tensor]): An optional tensor for masking specific elements. Defaults to None.
+            reduce_mean (bool): If True, returns the mean of the losses; otherwise returns the loss per element. Defaults to True.
+
+        Returns:
+            `torch.Tensor`: Calculated loss. Scalar if `reduce_mean` is True, otherwise tensor of shape (B, C, H, W).
+        """
+        pass
+
+    @abstractmethod
+    def mean(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Extract the mean from the input tensor.
+
+        Parameters:
+            input (torch.Tensor): The input tensor containing the predicted values.
+
+        Returns:
+            `torch.Tensor`: Mean of the distribution.
+        """
+        pass
+
+    @abstractmethod
+    def var(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Extract the variance from the input tensor.
+
+        Parameters:
+            input (torch.Tensor): The input tensor containing the predicted values.
+
+        Returns:
+            `torch.Tensor`: Variance of the distribution.
+        """
+        pass
+
+    @abstractmethod
+    def std(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Extract the standard deviation from the input tensor.
+
+        Parameters:
+            input (torch.Tensor): The input tensor containing the predicted values.
+
+        Returns:
+            `torch.Tensor`: Standard deviation of the distribution.
+        """
+        pass
+
 
 class GaussianNLL(torch.nn.Module):
     """

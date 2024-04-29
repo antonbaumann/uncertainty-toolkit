@@ -4,7 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 
 
-def compute_precision_recall_dataframe(
+def regression_precision_recall_df(
     y_pred: torch.Tensor, 
     var_pred: torch.Tensor, 
     y_true: torch.Tensor, 
@@ -37,7 +37,7 @@ def compute_precision_recall_dataframe(
     })
 
 
-def compute_calibration_dataframe(
+def regression_calibration_df(
     y_pred: torch.Tensor, 
     var_pred: torch.Tensor, 
     y_true: torch.Tensor,
@@ -76,19 +76,6 @@ def compute_calibration_dataframe(
             'observed_p': observed_p.item(),
         })
     return pd.DataFrame(calibration_data)
-
-
-def expected_calibration_error(calibration_df: pd.DataFrame) -> float:
-    """
-    Compute the expected calibration error.
-
-    Args:
-        calibration_df (pd.DataFrame): The calibration dataframe.
-    
-    Returns:
-        float: The expected calibration error.
-    """
-    return (calibration_df['observed_p'] - calibration_df['expected_p']).abs().mean()
 
 
 def _normal_icdf(p: torch.Tensor, loc: torch.Tensor, variance: torch.Tensor) -> torch.Tensor:

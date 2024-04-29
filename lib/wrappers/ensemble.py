@@ -28,4 +28,13 @@ class Ensemble(torch.nn.Module):
         self.wrapper = BaseWrapper(models=models, criterion=criterion, monte_carlo_samples=1)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Computes the ensemble prediction.
+
+        Arguments:
+            input (torch.Tensor): The input tensor. Shape: `(B, C * num_params, H, W)`.
+
+        Returns:
+            torch.Tensor: The ensemble prediction dictionary. 
+        """
         return self.wrapper(input)

@@ -34,6 +34,9 @@ class MonteCarlo(torch.nn.Module):
             self._activate_mc_dropout(model)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Computes the Monte Carlo prediction.
+        """
         return self.wrapper(input)
     
     @staticmethod

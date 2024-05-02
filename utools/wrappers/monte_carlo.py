@@ -1,4 +1,5 @@
 import torch
+from typing import Union
 
 from utools.losses.regression import RegressionLoss
 from utools.losses.classification import HeteroscedasticSoftmax
@@ -14,7 +15,7 @@ class MonteCarlo(torch.nn.Module):
             self, 
             *,
             model: torch.nn.Module,
-            criterion: RegressionLoss | HeteroscedasticSoftmax,
+            criterion: Union[RegressionLoss, HeteroscedasticSoftmax],
             monte_carlo_samples: int,
         ):
         """

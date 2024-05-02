@@ -1,5 +1,5 @@
 import torch
-from typing import List
+from typing import List, Union
 
 from utools.losses.regression import RegressionLoss
 from utools.losses.classification import HeteroscedasticSoftmax
@@ -13,7 +13,7 @@ class BaseWrapper(torch.nn.Module):
             self, 
             *,
             models: List[torch.nn.Module],
-            criterion: RegressionLoss | HeteroscedasticSoftmax,
+            criterion: Union[RegressionLoss, HeteroscedasticSoftmax],
             monte_carlo_samples: int,
         ):
         super(BaseWrapper, self).__init__()

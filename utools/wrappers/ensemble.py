@@ -1,5 +1,5 @@
 import torch
-from typing import List
+from typing import List, Union
 
 from utools.losses.regression import RegressionLoss
 from utools.losses.classification import HeteroscedasticSoftmax
@@ -15,7 +15,7 @@ class Ensemble(torch.nn.Module):
             self, 
             *,
             models: List[torch.nn.Module],
-            criterion: RegressionLoss | HeteroscedasticSoftmax,
+            criterion: Union[RegressionLoss, HeteroscedasticSoftmax],
         ):
         """
         Initializes the `Ensemble` module.

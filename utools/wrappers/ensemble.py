@@ -1,9 +1,9 @@
 import torch
 from typing import List
 
-from lib.losses.regression import RegressionLoss
-from lib.losses.classification import HeteroscedasticSoftmax
-from lib.wrappers.base import BaseWrapper
+from utools.losses.regression import RegressionLoss
+from utools.losses.classification import HeteroscedasticSoftmax
+from utools.wrappers.base import BaseWrapper
 
 
 class Ensemble(torch.nn.Module):

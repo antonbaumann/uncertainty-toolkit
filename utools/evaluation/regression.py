@@ -57,8 +57,12 @@ def regression_calibration_df(
     n_samples: Optional[int] = None,
     max_workers: int = 1,
 ) -> pd.DataFrame:
-    """
+    r"""
     Compute the calibration dataframe for regression models.
+
+    For each expected probability, the observed probability $p_{obs}$ is computed by comparing the true values to the inverse CDF of the predicted values evaluated at the expected probability $p_{exp}$:
+    $$ p_{obs} = \frac{\sum_{i=1}^{N}\mathbb I\left[y_i \leq F_i^{-1}(p_{exp})\right]}{N}  $$
+
     Refer to https://arxiv.org/abs/1807.00263 for mathematical details.
 
     Args:

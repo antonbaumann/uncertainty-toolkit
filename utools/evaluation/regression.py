@@ -52,7 +52,7 @@ def regression_calibration_df(
     y_pred: torch.Tensor, 
     var_pred: torch.Tensor, 
     y_true: torch.Tensor,
-    distribution: Literal['normal', 'laplace'],
+    distribution: Literal['normal', 'laplace'] = 'normal',
     n_bins: int = 50,
     n_samples: Optional[int] = None,
     max_workers: int = 1,

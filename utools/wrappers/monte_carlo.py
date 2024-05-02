@@ -26,17 +26,17 @@ class MonteCarlo(torch.nn.Module):
             monte_carlo_samples (int): The number of samples to use for Monte Carlo simulation.
         """
         super(MonteCarlo, self).__init__()
-        self.wrapper = BaseWrapper(models=[model], criterion=criterion, monte_carlo_samples=monte_carlo_samples)
+        self.__wrapper = BaseWrapper(models=[model], criterion=criterion, monte_carlo_samples=monte_carlo_samples)
 
         # Activate MC Dropout for the model
-        for model in self.wrapper.models:
+        for model in self.__wrapper.models:
             self._activate_mc_dropout(model)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         """
         Computes the Monte Carlo prediction.
         """
-        return self.wrapper(input)
+        return self.__wrapper(input)
     
     @staticmethod
     def _activate_mc_dropout(model: torch.nn.Module):

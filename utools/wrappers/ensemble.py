@@ -25,7 +25,7 @@ class Ensemble(torch.nn.Module):
             criterion (RegressionLoss | HeteroscedasticSoftmax): The criterion to be used for computing probabilistic outputs.
         """
         super(Ensemble, self).__init__()
-        self.wrapper = BaseWrapper(models=models, criterion=criterion, monte_carlo_samples=1)
+        self.__wrapper = BaseWrapper(models=models, criterion=criterion, monte_carlo_samples=1)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         """
@@ -37,4 +37,4 @@ class Ensemble(torch.nn.Module):
         Returns:
             torch.Tensor: The ensemble prediction dictionary. 
         """
-        return self.wrapper(input)
+        return self.__wrapper(input)

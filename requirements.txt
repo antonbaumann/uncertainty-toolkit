@@ -2,4 +2,6 @@ torch
 pandas
 numpy
 tqdm
+matplotlib
+seaborn
 pdoc~=14.4

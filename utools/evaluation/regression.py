@@ -2,6 +2,7 @@ import torch
 from typing import Literal, Optional
 import pandas as pd
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 
 def regression_precision_recall_df(
@@ -54,6 +55,7 @@ def regression_calibration_df(
     distribution: Literal['normal', 'laplace'],
     n_bins: int = 50,
     n_samples: Optional[int] = None,
+    max_workers: int = 1,
 ) -> pd.DataFrame:
     """
     Compute the calibration dataframe for regression models.
@@ -66,6 +68,7 @@ def regression_calibration_df(
         distribution (Distribution): The distribution module (e.g. Normal, if `GaussianNLL` was used or Laplace, if `LaplaceNLL` was used).
         n_bins (int): The number of bins.
         n_samples (int): The number of samples to use for calibration.
+        max_workers (int): The number of workers to use for parallel processing. Default: 1. WARNING: Can get memory intensive if set to a high value.
     
     Returns:
         `pd.DataFrame`: The calibration dataframe.
@@ -82,16 +85,17 @@ def regression_calibration_df(
     else:
         raise ValueError(f"Unknown distribution: {distribution}")
     
-    confidence_levels = torch.arange(n_bins) / (n_bins - 1)
+    confidence_levels = torch.linspace(0, 1, n_bins)
 
-    calibration_data = []
-    for p in tqdm(confidence_levels):
+    def process_bin(p):
         icdf_values = icdf(p, loc=y_pred, variance=var_pred)
         observed_p = (y_true <= icdf_values).float().mean()
-        calibration_data.append({
-            'expected_p': p.item(),
-            'observed_p': observed_p.item(),
-        })
+        return {'expected_p': p.item(), 'observed_p': observed_p.item()}
+
+    # Use ThreadPoolExecutor to parallelize the bin processing
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        calibration_data = list(tqdm(executor.map(process_bin, confidence_levels), total=n_bins))
+
     return pd.DataFrame(calibration_data)
 
 

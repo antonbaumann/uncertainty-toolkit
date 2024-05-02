@@ -16,7 +16,7 @@ def classification_calibration_df(
         n_bins (int): The number of bins to use for calibration.
     
     Returns:
-        pd.DataFrame: The calibration dataframe.
+        `pd.DataFrame`: The calibration dataframe.
     """
     bin_edges = torch.linspace(0, 1, n_bins + 1)
 

@@ -9,7 +9,7 @@ def expected_calibration_error(calibration_df: pd.DataFrame) -> float:
         calibration_df (pd.DataFrame): The calibration dataframe.
     
     Returns:
-        float: The expected calibration error.
+        `float`: The expected calibration error.
     """
 
     abs_diff = (calibration_df['observed_p'] - calibration_df['expected_p']).abs()
